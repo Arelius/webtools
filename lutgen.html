@@ -1,0 +1,44 @@
+<html>
+  <body onload="javascript:gentex();">
+    <script type="text/javascript">
+      function gentex() {
+
+        var side = 16;
+
+        var canvas = document.getElementById("lutCanvas");
+        canvas.width = side * side;
+        canvas.height = side;
+
+        var ctx = canvas.getContext("2d");
+        var imageData = ctx.createImageData(side * side, side);
+
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, side*side, side);
+
+        for(var y=0; y < side; y++) {
+          for(var z=0; z < side; z++) {
+            for(var x=0; x < side; x++) {
+              var idx = (y * side * side + z * side + x) * 4;
+
+              imageData.data[idx + 0] = (x / side) * 255;
+              imageData.data[idx + 1] = (y / side) * 255;
+              imageData.data[idx + 2] = (z / side) * 255;
+              imageData.data[idx + 3] = 255;
+
+            }
+          }
+        }
+        
+        ctx.putImageData(imageData, 0, 0);
+
+        var url = canvas.toDataURL("image/png");
+
+        var imgElem = document.getElementById("lutImage");
+        imgElem.src = url;
+      }
+    </script>
+    <canvas id="lutCanvas" hidden>
+    </canvas>
+    <img id="lutImage" />
+  </body>
+</html>
